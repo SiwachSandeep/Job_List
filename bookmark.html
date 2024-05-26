@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admitted</title>
+    <link rel="stylesheet" href="commonStyles.css" />
+  </head>
+
+  <body>
+    <div id="links">
+      <div><a href="index.html">Home</a></div>
+      <div><a href="applied.html">Applied Jobs</a></div>
+      <div><a href="bookmark.html">Bookmarks</a></div>
+    </div>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Job Applied</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="body">
+          <!-- append the code here -->
+        </tbody>  
+      </table>
+    </main>
+  </body>
+  <script>
+    //you need to code here
+    let res = JSON.parse(localStorage.getItem("BookList"));
+    
+    BookFuns(res)
+
+     function BookFuns(result){
+      //document.querySelector("tbody").innerHTML=""
+    result.forEach(function(el,i) {
+      let tr = document.createElement("tr");
+      let name = document.createElement("td");
+      name.innerText = el.name;
+
+      let eMail = document.createElement("td");
+      eMail.innerText = el.email;
+
+      let job = document.createElement("td");
+      job.innerText = el.role;
+
+      let delee =   document.createElement("td");
+      delee.innerText = "Delete";
+      delee.addEventListener("click", function(event){
+        event.target.parentNode.remove();
+        delBookMark(i)
+      });
+
+
+      tr.append(name,eMail,job,delee);
+      document.querySelector("#body").append(tr);
+    });
+  }
+    function delBookMark(i){
+      res.splice(i, 1);
+      console.log(res)
+      localStorage.setItem("BookList",JSON.stringify(res));
+      //window.location.reload();
+      //BookFuns(res);
+    }
+  </script>
+</html>

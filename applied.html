@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Database</title>
+    <link rel="stylesheet" href="commonStyles.css" />
+  </head>
+
+  <body>
+    <div id="links">
+      <div><a href="index.html">Home</a></div>
+      <div><a href="applied.html">Applied Jobs</a></div>
+      <div><a href="bookmark.html">Bookmarks</a></div>
+    </div>
+
+    <select id="Salary" onChange="HandelSalery()">
+    <option value="ASC">ASC</option>
+    <option value="DSC">DSC</option>
+  </select>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Job applied</th>
+            <th>Salary expected</th>
+            <th>Add to bookmark</th>
+          </tr>
+        </thead>
+        <tbody id="body">
+          <!-- Append your output to tbody -->
+        </tbody>
+      </table>
+    </main>
+  </body>
+  <script>
+    //you need to code here
+    let res = JSON.parse(localStorage.getItem("jobList"));
+    DisplayTavle(res)
+    let BookArr = JSON.parse(localStorage.getItem("BookList")) ||  [];
+
+    function HandelSalery(){
+      let selected = document.querySelector("#Salary").value;
+      if(selected == "ASC"){
+        res.sort(function(a, b){
+          return a.salary - b.salary;
+        })
+        DisplayTavle(res)
+      }
+      if(selected == "DSC"){
+        res.sort(function(a, b){
+          return b.salary - a.salary;
+        })
+        DisplayTavle(res)
+      }
+    }
+
+    function DisplayTavle(result){
+      document.querySelector("tbody").innerHTML = "";
+    result.forEach(el => {
+      let tr = document.createElement("tr");
+      let name = document.createElement("td");
+      name.innerText = el.name;
+
+      let eMail = document.createElement("td");
+      eMail.innerText = el.email;
+
+      let role = document.createElement("td");
+      role.innerText = el.role;
+
+      let salary = document.createElement("td")
+      salary.innerText = el.salary;
+
+      let book = document.createElement("td");
+      book.innerText = "Add to BookMark";
+
+      book.addEventListener("click", function(){
+        BookFun(el);
+      })
+
+      tr.append(name,eMail,role,salary,book);
+      document.querySelector("#body").append(tr)
+    });
+  }
+    function BookFun(el){
+      BookArr.push(el);
+      localStorage.setItem("BookList",JSON.stringify(BookArr));
+    }
+  </script>
+</html>
